@@ -1,220 +1,252 @@
 -- ═══════════════════════════════════════════════════════
--- AIRA Study Centre — Supabase PostgreSQL Schema
+-- AIRA Study Centre — MySQL Schema
 -- Module 4.1 — Primary Datastore
 -- ═══════════════════════════════════════════════════════
 --
 -- DEPLOYMENT:
--- 1. Go to your Supabase project dashboard
--- 2. Navigate to SQL Editor
--- 3. Paste and run this entire file
--- 4. Verify tables in Table Editor
--- 5. Enable RLS in Authentication → Policies
+-- 1. Connect to your MySQL server
+-- 2. Create the database: CREATE DATABASE aira_study_centre;
+-- 3. Select the database: USE aira_study_centre;
+-- 4. Run this entire file
+-- 5. Verify tables and triggers
+-- 6. Create application users with appropriate GRANTs
 -- ═══════════════════════════════════════════════════════
 
 -- ──────────────── LEADS TABLE ────────────────
 
 CREATE TABLE IF NOT EXISTS leads (
-    id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-    form_type       TEXT NOT NULL CHECK (form_type IN ('demo', 'diagnostic')),
-    student_name    TEXT NOT NULL,
-    grade           INTEGER NOT NULL CHECK (grade BETWEEN 7 AND 10),
-    subject         TEXT NOT NULL CHECK (subject IN ('Maths', 'Science', 'Both')),
-    phone           TEXT NOT NULL,
+    id              CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    created_at      DATETIME NOT NULL DEFAULT (UTC_TIMESTAMP()),
+    form_type       ENUM('demo', 'diagnostic') NOT NULL,
+    student_name    VARCHAR(255) NOT NULL,
+    grade           INT NOT NULL,
+    subject         ENUM('Maths', 'Science', 'Both') NOT NULL,
+    phone           VARCHAR(20) NOT NULL,
     page_url        TEXT,
     utm_source      TEXT,
-    recaptcha_score NUMERIC(3,2),
-    status          TEXT NOT NULL DEFAULT 'new' CHECK (status IN ('new', 'contacted', 'enrolled', 'duplicate', 'spam')),
+    recaptcha_score DECIMAL(3,2),
+    status          ENUM('new', 'contacted', 'enrolled', 'duplicate', 'spam') NOT NULL DEFAULT 'new',
     notes           TEXT,
-    updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
-);
+    updated_at      DATETIME NOT NULL DEFAULT (UTC_TIMESTAMP()) ON UPDATE CURRENT_TIMESTAMP,
 
--- Add comment for documentation
-COMMENT ON TABLE leads IS 'AIRA Study Centre lead submissions from website forms';
+    -- grade must be between 7 and 10
+    CONSTRAINT chk_grade CHECK (grade BETWEEN 7 AND 10)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ──────────────── AUDIT LOG TABLE ────────────────
 
 CREATE TABLE IF NOT EXISTS audit_log (
-    id          BIGSERIAL PRIMARY KEY,
-    lead_id     UUID REFERENCES leads(id) ON DELETE SET NULL,
-    action      TEXT NOT NULL,
-    changed_by  TEXT,
-    changed_at  TIMESTAMPTZ DEFAULT now(),
-    old_values  JSONB,
-    new_values  JSONB
-);
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    lead_id     CHAR(36),
+    action      VARCHAR(50) NOT NULL,
+    changed_by  VARCHAR(255),
+    changed_at  DATETIME DEFAULT (UTC_TIMESTAMP()),
+    old_values  JSON,
+    new_values  JSON,
 
-COMMENT ON TABLE audit_log IS 'Tracks all changes to leads table for auditing';
+    CONSTRAINT fk_audit_lead FOREIGN KEY (lead_id)
+        REFERENCES leads(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ──────────────── INTEGRITY CHECKS TABLE ────────────────
 
 CREATE TABLE IF NOT EXISTS integrity_checks (
-    id          BIGSERIAL PRIMARY KEY,
-    run_at      TIMESTAMPTZ DEFAULT now(),
-    check_name  TEXT,
-    result      TEXT,
-    details     JSONB
-);
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    run_at      DATETIME DEFAULT (UTC_TIMESTAMP()),
+    check_name  VARCHAR(255),
+    result      VARCHAR(50),
+    details     JSON
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-COMMENT ON TABLE integrity_checks IS 'Results of daily integrity checks from Apps Script';
+-- ──────────────── DEDUPLICATION ────────────────
+-- MySQL does not support partial unique indexes (WHERE clause).
+-- Instead, we use a generated column to compute the date portion
+-- of created_at, and a BEFORE INSERT trigger to enforce the
+-- deduplication rule: same phone + form_type + calendar day
+-- (excluding duplicates) can only appear once.
 
--- ──────────────── DEDUPLICATION INDEX ────────────────
--- Unique partial index on (phone, form_type, day) to enforce
--- the deduplication rule: same phone + form_type can only submit
--- once per calendar day
+-- Add a generated column for the date part of created_at
+ALTER TABLE leads
+    ADD COLUMN created_date DATE GENERATED ALWAYS AS (DATE(created_at)) STORED;
 
-CREATE UNIQUE INDEX IF NOT EXISTS idx_leads_dedup
-    ON leads (phone, form_type, (created_at::date))
-    WHERE status != 'duplicate';
+-- Unique index on (phone, form_type, created_date) for non-duplicate leads.
+-- Since MySQL doesn't support partial indexes, the dedup enforcement for
+-- status != 'duplicate' is handled via a BEFORE INSERT trigger below.
+-- This index still helps with performance for lookups.
+CREATE INDEX idx_leads_dedup ON leads (phone, form_type, created_date);
 
 -- ──────────────── PERFORMANCE INDEXES ────────────────
 
-CREATE INDEX IF NOT EXISTS idx_leads_created_at ON leads (created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_leads_phone ON leads (phone);
-CREATE INDEX IF NOT EXISTS idx_leads_status ON leads (status);
-CREATE INDEX IF NOT EXISTS idx_leads_form_type ON leads (form_type);
+CREATE INDEX idx_leads_created_at ON leads (created_at DESC);
+CREATE INDEX idx_leads_phone ON leads (phone);
+CREATE INDEX idx_leads_status ON leads (status);
+CREATE INDEX idx_leads_form_type ON leads (form_type);
 
--- ──────────────── AUTO-UPDATE updated_at ────────────────
+-- ──────────────── DEDUPLICATION TRIGGER ────────────────
+-- Enforces: same phone + form_type can only submit once per
+-- calendar day (unless the new row is being inserted as 'duplicate')
+-- This replicates PostgreSQL's partial unique index behavior.
 
-CREATE OR REPLACE FUNCTION update_updated_at()
-RETURNS TRIGGER AS $$
+DELIMITER $$
+
+CREATE TRIGGER trg_leads_dedup_check
+BEFORE INSERT ON leads
+FOR EACH ROW
 BEGIN
-    NEW.updated_at = now();
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
+    DECLARE existing_count INT;
 
-DROP TRIGGER IF EXISTS trigger_leads_updated_at ON leads;
-CREATE TRIGGER trigger_leads_updated_at
-    BEFORE UPDATE ON leads
-    FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at();
+    -- Only enforce dedup if the new row's status is NOT 'duplicate'
+    IF NEW.status != 'duplicate' THEN
+        SELECT COUNT(*) INTO existing_count
+        FROM leads
+        WHERE phone = NEW.phone
+          AND form_type = NEW.form_type
+          AND DATE(created_at) = DATE(NEW.created_at)
+          AND status != 'duplicate';
 
--- ──────────────── AUDIT LOG TRIGGER ────────────────
+        IF existing_count > 0 THEN
+            SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Duplicate submission: same phone + form_type already exists for this date';
+        END IF;
+    END IF;
+END$$
+
+DELIMITER ;
+
+-- ──────────────── AUDIT LOG TRIGGERS ────────────────
 -- Populates audit_log on every UPDATE to leads
 
-CREATE OR REPLACE FUNCTION log_lead_update()
-RETURNS TRIGGER AS $$
+DELIMITER $$
+
+CREATE TRIGGER trigger_leads_audit
+AFTER UPDATE ON leads
+FOR EACH ROW
 BEGIN
     INSERT INTO audit_log (lead_id, action, changed_by, old_values, new_values)
     VALUES (
         NEW.id,
         'UPDATE',
-        current_user,
-        to_jsonb(OLD),
-        to_jsonb(NEW)
+        CURRENT_USER(),
+        JSON_OBJECT(
+            'id', OLD.id,
+            'created_at', OLD.created_at,
+            'form_type', OLD.form_type,
+            'student_name', OLD.student_name,
+            'grade', OLD.grade,
+            'subject', OLD.subject,
+            'phone', OLD.phone,
+            'page_url', OLD.page_url,
+            'utm_source', OLD.utm_source,
+            'recaptcha_score', OLD.recaptcha_score,
+            'status', OLD.status,
+            'notes', OLD.notes,
+            'updated_at', OLD.updated_at
+        ),
+        JSON_OBJECT(
+            'id', NEW.id,
+            'created_at', NEW.created_at,
+            'form_type', NEW.form_type,
+            'student_name', NEW.student_name,
+            'grade', NEW.grade,
+            'subject', NEW.subject,
+            'phone', NEW.phone,
+            'page_url', NEW.page_url,
+            'utm_source', NEW.utm_source,
+            'recaptcha_score', NEW.recaptcha_score,
+            'status', NEW.status,
+            'notes', NEW.notes,
+            'updated_at', NEW.updated_at
+        )
     );
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
+END$$
 
-DROP TRIGGER IF EXISTS trigger_leads_audit ON leads;
-CREATE TRIGGER trigger_leads_audit
-    AFTER UPDATE ON leads
-    FOR EACH ROW
-    EXECUTE FUNCTION log_lead_update();
+DELIMITER ;
 
 -- Also log inserts for full audit trail
-CREATE OR REPLACE FUNCTION log_lead_insert()
-RETURNS TRIGGER AS $$
+
+DELIMITER $$
+
+CREATE TRIGGER trigger_leads_audit_insert
+AFTER INSERT ON leads
+FOR EACH ROW
 BEGIN
     INSERT INTO audit_log (lead_id, action, changed_by, new_values)
     VALUES (
         NEW.id,
         'INSERT',
-        current_user,
-        to_jsonb(NEW)
+        CURRENT_USER(),
+        JSON_OBJECT(
+            'id', NEW.id,
+            'created_at', NEW.created_at,
+            'form_type', NEW.form_type,
+            'student_name', NEW.student_name,
+            'grade', NEW.grade,
+            'subject', NEW.subject,
+            'phone', NEW.phone,
+            'page_url', NEW.page_url,
+            'utm_source', NEW.utm_source,
+            'recaptcha_score', NEW.recaptcha_score,
+            'status', NEW.status,
+            'notes', NEW.notes,
+            'updated_at', NEW.updated_at
+        )
     );
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
+END$$
 
-DROP TRIGGER IF EXISTS trigger_leads_audit_insert ON leads;
-CREATE TRIGGER trigger_leads_audit_insert
-    AFTER INSERT ON leads
-    FOR EACH ROW
-    EXECUTE FUNCTION log_lead_insert();
+DELIMITER ;
 
 -- ══════════════════════════════════════════════
--- ROW LEVEL SECURITY (RLS)
+-- ACCESS CONTROL (replaces PostgreSQL RLS)
+-- ══════════════════════════════════════════════
+-- MySQL does not have Row Level Security.
+-- Instead, create dedicated users with appropriate privileges.
+--
+-- USAGE:
+-- 1. Create an 'anon' user for public website form submissions
+-- 2. Create an 'admin' user for dashboard/management access
+-- 3. Run the GRANT statements below after creating the users
+--
+-- Example user creation (adjust passwords as needed):
+--   CREATE USER 'aira_anon'@'%' IDENTIFIED BY 'CHANGE_ME';
+--   CREATE USER 'aira_admin'@'%' IDENTIFIED BY 'CHANGE_ME';
 -- ══════════════════════════════════════════════
 
--- Enable RLS on all tables
-ALTER TABLE leads ENABLE ROW LEVEL SECURITY;
-ALTER TABLE audit_log ENABLE ROW LEVEL SECURITY;
-ALTER TABLE integrity_checks ENABLE ROW LEVEL SECURITY;
+-- ── Anon User: Can only INSERT into leads (from website forms) ──
+-- GRANT INSERT ON aira_study_centre.leads TO 'aira_anon'@'%';
 
--- ── Leads Policies ──
+-- ── Anon User: Can INSERT into audit_log (edge function writes audit logs) ──
+-- GRANT INSERT ON aira_study_centre.audit_log TO 'aira_anon'@'%';
 
--- Public (anon) can INSERT leads (from website forms)
-CREATE POLICY "Allow public insert" ON leads
-    FOR INSERT
-    TO anon
-    WITH CHECK (true);
+-- ── Anon User: Can INSERT into integrity_checks (Apps Script service) ──
+-- GRANT INSERT ON aira_study_centre.integrity_checks TO 'aira_anon'@'%';
 
--- Only authenticated admin can SELECT
-CREATE POLICY "Admin can read all leads" ON leads
-    FOR SELECT
-    TO authenticated
-    USING (true);
+-- ── Admin User: Full CRUD on leads ──
+-- GRANT SELECT, INSERT, UPDATE, DELETE ON aira_study_centre.leads TO 'aira_admin'@'%';
 
--- Only authenticated admin can UPDATE
-CREATE POLICY "Admin can update leads" ON leads
-    FOR UPDATE
-    TO authenticated
-    USING (true)
-    WITH CHECK (true);
-
--- Only authenticated admin can DELETE
-CREATE POLICY "Admin can delete leads" ON leads
-    FOR DELETE
-    TO authenticated
-    USING (true);
-
--- ── Audit Log Policies ──
-
--- Public can INSERT (edge function writes audit logs)
-CREATE POLICY "Allow insert audit" ON audit_log
-    FOR INSERT
-    TO anon
-    WITH CHECK (true);
-
--- Only admin can SELECT
-CREATE POLICY "Admin can read audit" ON audit_log
-    FOR SELECT
-    TO authenticated
-    USING (true);
-
--- ── Integrity Checks Policies ──
-
--- Apps Script service can INSERT
-CREATE POLICY "Allow insert integrity" ON integrity_checks
-    FOR INSERT
-    TO anon
-    WITH CHECK (true);
-
--- Admin can SELECT
-CREATE POLICY "Admin can read integrity" ON integrity_checks
-    FOR SELECT
-    TO authenticated
-    USING (true);
+-- ── Admin User: Can read audit log and integrity checks ──
+-- GRANT SELECT ON aira_study_centre.audit_log TO 'aira_admin'@'%';
+-- GRANT SELECT ON aira_study_centre.integrity_checks TO 'aira_admin'@'%';
 
 -- ══════════════════════════════════════════════
--- SUPABASE BACKUP DOCUMENTATION
+-- BACKUP DOCUMENTATION
 -- ══════════════════════════════════════════════
 --
--- Point-in-Time Recovery (PITR):
--- ─────────────────────────────
--- Supabase Pro plans include PITR. To enable:
--- 1. Go to Supabase Dashboard → Database → Backups
--- 2. Enable "Point in Time Recovery"
--- 3. This allows restoring to any second within the retention window
--- 4. Default retention: 7 days (Pro), 28 days (Enterprise)
+-- MySQL Native Backups:
+-- ─────────────────────
+-- Use mysqldump for logical backups:
+--   mysqldump -u root -p aira_study_centre > aira_backup_$(date +%Y-%m-%d).sql
 --
--- Daily Backups:
--- ─────────────
--- Supabase automatically takes daily backups.
--- These can be downloaded from Dashboard → Database → Backups
+-- For automated daily backups, set up a cron job:
+--   0 3 * * * mysqldump -u root -p'PASSWORD' aira_study_centre > /backups/aira_$(date +\%Y-\%m-\%d).sql
+--
+-- Binary Log / Point-in-Time Recovery:
+-- ─────────────────────────────────────
+-- 1. Enable binary logging in my.cnf:
+--    [mysqld]
+--    log_bin = mysql-bin
+--    binlog_format = ROW
+--    expire_logs_days = 7
+-- 2. Use mysqlbinlog to replay events for PITR
 --
 -- Additional GCS Backup:
 -- ─────────────────────
