@@ -2,7 +2,23 @@
   'use strict';
 
   var configuredBase = window.AIRA_API_BASE_URL || '__AIRA_API_BASE_URL__';
-  var API_BASE = configuredBase.indexOf('__') === 0 ? 'http://localhost:3000/api' : configuredBase.replace(/\/$/, '');
+  var API_BASE;
+  if (configuredBase.indexOf('__') === 0) {
+    // Default to same origin's /api when possible, otherwise fall back to localhost:3001 (Compose mapping)
+    try {
+      var origin = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin : '';
+      if (origin && origin !== 'null' && origin.indexOf('file:') !== 0) {
+        // Use same-origin API where possible (keeps requests on same port)
+        API_BASE = origin.replace(/\/$/, '') + '/api';
+      } else {
+        API_BASE = 'http://localhost:3001/api';
+      }
+    } catch (e) {
+      API_BASE = 'http://localhost:3001/api';
+    }
+  } else {
+    API_BASE = configuredBase.replace(/\/$/, '');
+  }
 
   function token() {
     return localStorage.getItem('aira_dbms_token') || '';

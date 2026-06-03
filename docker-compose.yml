@@ -1,0 +1,47 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: aira_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_change_me
+      MYSQL_DATABASE: aira_dbms
+      MYSQL_USER: aira_app
+      MYSQL_PASSWORD: aira_password_change_me
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/aira_dbms_schema.sql:/docker-entrypoint-initdb.d/001_schema.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: aira_backend
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: aira_app
+      DB_PASSWORD: aira_password_change_me
+      DB_NAME: aira_dbms
+      PORT: 3000
+      JWT_SECRET: dev-secret-change-me
+      NODE_ENV: development
+      CORS_ORIGIN: http://localhost:3001,http://localhost:3000,http://127.0.0.1:3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+      - ./frontend:/usr/src/frontend:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db_data:
