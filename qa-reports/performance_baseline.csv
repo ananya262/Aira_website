@@ -1,0 +1,5 @@
+query,ms,status
+SELECT * FROM v_student_performance LIMIT 50,2,PASS
+SELECT * FROM v_course_utilization LIMIT 50,2,PASS
+SELECT * FROM v_faculty_workload LIMIT 50,2,PASS
+SELECT * FROM v_attendance_summary LIMIT 50,1,PASS

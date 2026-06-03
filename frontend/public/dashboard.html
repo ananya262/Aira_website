@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIRA DBMS Dashboard | AIRA Study Centre</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; connect-src 'self' http://localhost:3000 http://127.0.0.1:3000;">
+    <link rel="stylesheet" href="assets/styles/style.css">
+    <link rel="stylesheet" href="assets/styles/dashboard.css">
+</head>
+
+<body class="dashboard-body">
+    <nav class="navbar dbms-navbar" id="navbar">
+        <div class="container nav-inner">
+            <a href="Aira_website.html" class="logo">
+                <div class="nav-logo-circle">
+                    <img src="assets/images/Aira%20logo.png" alt="AIRA Logo">
+                </div>
+                <span>AIRA Study Centre</span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="Aira_website.html">Home</a>
+                <a href="programs.html">Programs</a>
+                <a href="contact.html">Contact</a>
+                <button id="logoutBtn" class="btn btn-outline">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dbms-shell">
+        <aside class="dbms-sidebar">
+            <div class="dbms-user-card">
+                <span id="userRole">Role</span>
+                <strong id="userName">AIRA User</strong>
+            </div>
+            <div id="roleNavigation" class="dbms-tabs"></div>
+        </aside>
+
+        <section class="dbms-workspace">
+            <header class="dbms-header">
+                <div>
+                    <span class="section-tag">AIRA-DBMS</span>
+                    <h1 id="viewTitle">Dashboard</h1>
+                </div>
+                <p id="viewSubtitle">Students, courses, faculty, enrollments, grades, attendance, and reports.</p>
+            </header>
+
+            <div id="dashboardMessage" class="dbms-message hidden"></div>
+            <div id="workspaceContent"></div>
+        </section>
+    </main>
+
+    <template id="tableTemplate">
+        <div class="dbms-card">
+            <div class="dbms-card-header">
+                <h2></h2>
+                <button class="btn btn-primary dbms-refresh">Refresh</button>
+            </div>
+            <div class="dbms-table-wrap">
+                <table class="dbms-table">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="assets/scripts/dashboard-api.js"></script>
+    <script src="assets/scripts/dashboard.js"></script>
+</body>
+
+</html>
+
+
