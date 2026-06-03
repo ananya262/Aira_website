@@ -4,7 +4,7 @@
 # ═══════════════════════════════════════════════════════
 
 [build]
-  publish = "src/"
+  publish = "frontend/public/"
 
 # ── Security Headers for All Routes ──
 [[headers]]

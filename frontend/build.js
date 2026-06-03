@@ -17,7 +17,8 @@ const http = require('http');
 
 /* ═══════════════ CONFIGURATION ═══════════════ */
 
-const SRC_DIR = path.join(__dirname, 'src');
+// After restructuring, source HTML lives in `public/` below the frontend folder
+const SRC_DIR = path.join(__dirname, 'public');
 const DIST_DIR = path.join(__dirname, 'dist');
 const ENV_FILE = path.join(__dirname, '.env');
 
