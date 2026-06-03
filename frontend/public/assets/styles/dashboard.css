@@ -1,0 +1,337 @@
+.dashboard-body {
+  cursor: auto;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 46%, #eef7ef 100%);
+}
+
+.dashboard-body::after,
+.dashboard-body .cursor-dot,
+.dashboard-body .cursor-ring {
+  display: none;
+}
+
+.dbms-login-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 8rem 1.5rem 3rem;
+}
+
+.dbms-login-panel {
+  width: min(100%, 960px);
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 2rem;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+}
+
+.dbms-login-panel h1,
+.dbms-header h1 {
+  font-size: clamp(2rem, 4vw, 3.75rem);
+  margin: 0.5rem 0 1rem;
+}
+
+.dbms-login-panel p {
+  color: var(--text-muted);
+}
+
+.dbms-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.dbms-status,
+.dbms-message {
+  min-height: 1.5rem;
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+.dbms-demo-users {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+
+.dbms-demo-users span {
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+
+.dbms-shell {
+  width: min(1440px, 100%);
+  margin: 0 auto;
+  padding: 7rem 1.5rem 2rem;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.5rem;
+}
+
+.dbms-sidebar,
+.dbms-card,
+.dbms-panel {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.dbms-sidebar {
+  position: sticky;
+  top: 6rem;
+  height: max-content;
+  padding: 1rem;
+}
+
+.dbms-user-card {
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--primary-light);
+  display: grid;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.dbms-user-card span {
+  color: var(--primary);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.dbms-tabs {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.dbms-tab {
+  border: 1px solid transparent;
+  background: transparent;
+  text-align: left;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-accent);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dbms-tab.active,
+.dbms-tab:hover {
+  border-color: rgba(46, 125, 50, 0.25);
+  background: #ffffff;
+  color: var(--primary);
+}
+
+.dbms-workspace {
+  min-width: 0;
+}
+
+.dbms-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.dbms-header p {
+  color: var(--text-muted);
+  max-width: 460px;
+}
+
+.dbms-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+}
+
+.dbms-card,
+.dbms-panel {
+  padding: 1rem;
+}
+
+.dbms-card {
+  grid-column: span 12;
+}
+
+.dbms-panel {
+  grid-column: span 6;
+}
+
+.dbms-card-header,
+.dbms-form-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.dbms-table-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 0.85rem;
+}
+
+.dbms-toolbar-label {
+  font-weight: 700;
+  color: var(--text-accent);
+  margin-right: 0.25rem;
+}
+
+.dbms-date-range {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.dbms-date-input {
+  min-width: 160px;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 0.45rem;
+  background: #fff;
+  color: inherit;
+}
+
+.dbms-date-apply {
+  margin-left: 0.1rem;
+}
+
+.dbms-preset-btn {
+  min-height: 34px;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.86rem;
+}
+
+.dbms-preset-btn.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.dbms-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.dbms-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 680px;
+}
+
+.dbms-table th,
+.dbms-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+  font-size: 0.92rem;
+}
+
+.dbms-table th {
+  color: var(--primary-dark);
+  background: var(--primary-light);
+}
+
+.dbms-sortable-head {
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+}
+
+.dbms-sortable-head:hover {
+  color: var(--primary);
+}
+
+.dbms-table-actions {
+  white-space: nowrap;
+}
+
+.dbms-table-actions .btn + .btn {
+  margin-left: 0.5rem;
+}
+
+.dbms-inline-form {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 0.75rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+
+.dbms-form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.dbms-inline-form .dbms-form-actions .btn {
+  min-height: 44px;
+}
+
+.dbms-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.dbms-chart-box {
+  min-height: 300px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 960px) {
+  .dbms-login-panel,
+  .dbms-shell,
+  .dbms-chart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dbms-sidebar {
+    position: static;
+  }
+
+  .dbms-header {
+    display: block;
+  }
+
+  .dbms-panel {
+    grid-column: span 12;
+  }
+
+  .dbms-inline-form {
+    grid-template-columns: 1fr;
+  }
+
+  .dbms-form-actions {
+    justify-content: center;
+  }
+}

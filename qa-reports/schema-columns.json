@@ -1,0 +1,1010 @@
+[
+  {
+    "TABLE_NAME": "app_users",
+    "COLUMN_NAME": "id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "auto_increment",
+    "COLUMN_KEY": "PRI"
+  },
+  {
+    "TABLE_NAME": "app_users",
+    "COLUMN_NAME": "username",
+    "COLUMN_TYPE": "varchar(80)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "UNI"
+  },
+  {
+    "TABLE_NAME": "app_users",
+    "COLUMN_NAME": "password_hash",
+    "COLUMN_TYPE": "varchar(255)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "app_users",
+    "COLUMN_NAME": "role",
+    "COLUMN_TYPE": "enum('admin','faculty','student')",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "app_users",
+    "COLUMN_NAME": "student_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "MUL"
+  },
+  {
+    "TABLE_NAME": "app_users",
+    "COLUMN_NAME": "faculty_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "MUL"
+  },
+  {
+    "TABLE_NAME": "app_users",
+    "COLUMN_NAME": "is_active",
+    "COLUMN_TYPE": "tinyint(1)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "1",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "app_users",
+    "COLUMN_NAME": "created_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "app_users",
+    "COLUMN_NAME": "updated_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "attendance",
+    "COLUMN_NAME": "id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "auto_increment",
+    "COLUMN_KEY": "PRI"
+  },
+  {
+    "TABLE_NAME": "attendance",
+    "COLUMN_NAME": "student_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "MUL"
+  },
+  {
+    "TABLE_NAME": "attendance",
+    "COLUMN_NAME": "course_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "MUL"
+  },
+  {
+    "TABLE_NAME": "attendance",
+    "COLUMN_NAME": "attendance_date",
+    "COLUMN_TYPE": "date",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "MUL"
+  },
+  {
+    "TABLE_NAME": "attendance",
+    "COLUMN_NAME": "is_present",
+    "COLUMN_TYPE": "tinyint(1)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "1",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "attendance",
+    "COLUMN_NAME": "class_count",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "1",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "attendance",
+    "COLUMN_NAME": "created_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "attendance",
+    "COLUMN_NAME": "updated_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "audit_log",
+    "COLUMN_NAME": "id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "auto_increment",
+    "COLUMN_KEY": "PRI"
+  },
+  {
+    "TABLE_NAME": "audit_log",
+    "COLUMN_NAME": "table_name",
+    "COLUMN_TYPE": "varchar(50)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "MUL"
+  },
+  {
+    "TABLE_NAME": "audit_log",
+    "COLUMN_NAME": "operation_type",
+    "COLUMN_TYPE": "enum('INSERT','UPDATE','DELETE')",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "MUL"
+  },
+  {
+    "TABLE_NAME": "audit_log",
+    "COLUMN_NAME": "changed_by",
+    "COLUMN_TYPE": "varchar(80)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "db_trigger",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "audit_log",
+    "COLUMN_NAME": "changed_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "audit_log",
+    "COLUMN_NAME": "old_value",
+    "COLUMN_TYPE": "text",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "audit_log",
+    "COLUMN_NAME": "new_value",
+    "COLUMN_TYPE": "text",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "course_faculty",
+    "COLUMN_NAME": "id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "auto_increment",
+    "COLUMN_KEY": "PRI"
+  },
+  {
+    "TABLE_NAME": "course_faculty",
+    "COLUMN_NAME": "course_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "MUL"
+  },
+  {
+    "TABLE_NAME": "course_faculty",
+    "COLUMN_NAME": "faculty_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "MUL"
+  },
+  {
+    "TABLE_NAME": "course_faculty",
+    "COLUMN_NAME": "assigned_date",
+    "COLUMN_TYPE": "date",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "curdate()",
+    "EXTRA": "DEFAULT_GENERATED",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "courses",
+    "COLUMN_NAME": "id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "auto_increment",
+    "COLUMN_KEY": "PRI"
+  },
+  {
+    "TABLE_NAME": "courses",
+    "COLUMN_NAME": "course_name",
+    "COLUMN_TYPE": "varchar(100)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "courses",
+    "COLUMN_NAME": "grade_level",
+    "COLUMN_TYPE": "varchar(20)",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "courses",
+    "COLUMN_NAME": "course_code",
+    "COLUMN_TYPE": "varchar(20)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "UNI"
+  },
+  {
+    "TABLE_NAME": "courses",
+    "COLUMN_NAME": "duration_hours",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "courses",
+    "COLUMN_NAME": "max_capacity",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "courses",
+    "COLUMN_NAME": "created_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "courses",
+    "COLUMN_NAME": "updated_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "enrollments",
+    "COLUMN_NAME": "id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "auto_increment",
+    "COLUMN_KEY": "PRI"
+  },
+  {
+    "TABLE_NAME": "enrollments",
+    "COLUMN_NAME": "student_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "MUL"
+  },
+  {
+    "TABLE_NAME": "enrollments",
+    "COLUMN_NAME": "course_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "MUL"
+  },
+  {
+    "TABLE_NAME": "enrollments",
+    "COLUMN_NAME": "enrollment_date",
+    "COLUMN_TYPE": "date",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "curdate()",
+    "EXTRA": "DEFAULT_GENERATED",
+    "COLUMN_KEY": "MUL"
+  },
+  {
+    "TABLE_NAME": "enrollments",
+    "COLUMN_NAME": "status",
+    "COLUMN_TYPE": "enum('active','completed','cancelled')",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "active",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "enrollments",
+    "COLUMN_NAME": "created_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "enrollments",
+    "COLUMN_NAME": "updated_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "faculty",
+    "COLUMN_NAME": "id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "auto_increment",
+    "COLUMN_KEY": "PRI"
+  },
+  {
+    "TABLE_NAME": "faculty",
+    "COLUMN_NAME": "faculty_name",
+    "COLUMN_TYPE": "varchar(100)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "faculty",
+    "COLUMN_NAME": "email",
+    "COLUMN_TYPE": "varchar(120)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "UNI"
+  },
+  {
+    "TABLE_NAME": "faculty",
+    "COLUMN_NAME": "phone",
+    "COLUMN_TYPE": "varchar(15)",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "faculty",
+    "COLUMN_NAME": "specialization",
+    "COLUMN_TYPE": "varchar(100)",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "faculty",
+    "COLUMN_NAME": "qualification",
+    "COLUMN_TYPE": "varchar(100)",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "faculty",
+    "COLUMN_NAME": "created_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "faculty",
+    "COLUMN_NAME": "updated_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "grades",
+    "COLUMN_NAME": "id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "auto_increment",
+    "COLUMN_KEY": "PRI"
+  },
+  {
+    "TABLE_NAME": "grades",
+    "COLUMN_NAME": "student_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "MUL"
+  },
+  {
+    "TABLE_NAME": "grades",
+    "COLUMN_NAME": "course_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "MUL"
+  },
+  {
+    "TABLE_NAME": "grades",
+    "COLUMN_NAME": "marks_obtained",
+    "COLUMN_TYPE": "decimal(5,2)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "grades",
+    "COLUMN_NAME": "total_marks",
+    "COLUMN_TYPE": "decimal(5,2)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "grades",
+    "COLUMN_NAME": "percentage",
+    "COLUMN_TYPE": "decimal(5,2)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "grades",
+    "COLUMN_NAME": "date_recorded",
+    "COLUMN_TYPE": "date",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "curdate()",
+    "EXTRA": "DEFAULT_GENERATED",
+    "COLUMN_KEY": "MUL"
+  },
+  {
+    "TABLE_NAME": "grades",
+    "COLUMN_NAME": "created_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "grades",
+    "COLUMN_NAME": "updated_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "student_accounts",
+    "COLUMN_NAME": "id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "auto_increment",
+    "COLUMN_KEY": "PRI"
+  },
+  {
+    "TABLE_NAME": "student_accounts",
+    "COLUMN_NAME": "student_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "UNI"
+  },
+  {
+    "TABLE_NAME": "student_accounts",
+    "COLUMN_NAME": "account_username",
+    "COLUMN_TYPE": "varchar(80)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "UNI"
+  },
+  {
+    "TABLE_NAME": "student_accounts",
+    "COLUMN_NAME": "password_hash",
+    "COLUMN_TYPE": "varchar(255)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "student_accounts",
+    "COLUMN_NAME": "account_status",
+    "COLUMN_TYPE": "enum('active','suspended','closed')",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "active",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "student_accounts",
+    "COLUMN_NAME": "last_login_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "student_accounts",
+    "COLUMN_NAME": "created_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "student_accounts",
+    "COLUMN_NAME": "updated_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "student_statistics",
+    "COLUMN_NAME": "id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "auto_increment",
+    "COLUMN_KEY": "PRI"
+  },
+  {
+    "TABLE_NAME": "student_statistics",
+    "COLUMN_NAME": "student_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "UNI"
+  },
+  {
+    "TABLE_NAME": "student_statistics",
+    "COLUMN_NAME": "average_percentage",
+    "COLUMN_TYPE": "decimal(5,2)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "0.00",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "student_statistics",
+    "COLUMN_NAME": "gpa",
+    "COLUMN_TYPE": "decimal(3,2)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "0.00",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "student_statistics",
+    "COLUMN_NAME": "attendance_percentage",
+    "COLUMN_TYPE": "decimal(5,2)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "0.00",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "student_statistics",
+    "COLUMN_NAME": "updated_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "students",
+    "COLUMN_NAME": "id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "auto_increment",
+    "COLUMN_KEY": "PRI"
+  },
+  {
+    "TABLE_NAME": "students",
+    "COLUMN_NAME": "name",
+    "COLUMN_TYPE": "varchar(100)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "students",
+    "COLUMN_NAME": "email",
+    "COLUMN_TYPE": "varchar(120)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": "UNI"
+  },
+  {
+    "TABLE_NAME": "students",
+    "COLUMN_NAME": "phone",
+    "COLUMN_TYPE": "varchar(15)",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "students",
+    "COLUMN_NAME": "grade_level",
+    "COLUMN_TYPE": "varchar(20)",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "students",
+    "COLUMN_NAME": "joining_date",
+    "COLUMN_TYPE": "date",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "students",
+    "COLUMN_NAME": "contact_address",
+    "COLUMN_TYPE": "text",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "students",
+    "COLUMN_NAME": "parent_phone",
+    "COLUMN_TYPE": "varchar(15)",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "students",
+    "COLUMN_NAME": "created_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "students",
+    "COLUMN_NAME": "updated_at",
+    "COLUMN_TYPE": "timestamp",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "CURRENT_TIMESTAMP",
+    "EXTRA": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_attendance_summary",
+    "COLUMN_NAME": "student_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "0",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_attendance_summary",
+    "COLUMN_NAME": "student_name",
+    "COLUMN_TYPE": "varchar(100)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_attendance_summary",
+    "COLUMN_NAME": "course_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "0",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_attendance_summary",
+    "COLUMN_NAME": "course_name",
+    "COLUMN_TYPE": "varchar(100)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_attendance_summary",
+    "COLUMN_NAME": "classes_attended",
+    "COLUMN_TYPE": "decimal(32,0)",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_attendance_summary",
+    "COLUMN_NAME": "total_classes",
+    "COLUMN_TYPE": "decimal(32,0)",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_attendance_summary",
+    "COLUMN_NAME": "attendance_percentage",
+    "COLUMN_TYPE": "decimal(38,2)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "0.00",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_course_utilization",
+    "COLUMN_NAME": "course_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "0",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_course_utilization",
+    "COLUMN_NAME": "course_name",
+    "COLUMN_TYPE": "varchar(100)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_course_utilization",
+    "COLUMN_NAME": "course_code",
+    "COLUMN_TYPE": "varchar(20)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_course_utilization",
+    "COLUMN_NAME": "grade_level",
+    "COLUMN_TYPE": "varchar(20)",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_course_utilization",
+    "COLUMN_NAME": "max_capacity",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_course_utilization",
+    "COLUMN_NAME": "enrollment_count",
+    "COLUMN_TYPE": "bigint",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "0",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_course_utilization",
+    "COLUMN_NAME": "fill_percentage",
+    "COLUMN_TYPE": "decimal(26,2)",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_faculty_workload",
+    "COLUMN_NAME": "faculty_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "0",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_faculty_workload",
+    "COLUMN_NAME": "faculty_name",
+    "COLUMN_TYPE": "varchar(100)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_faculty_workload",
+    "COLUMN_NAME": "specialization",
+    "COLUMN_TYPE": "varchar(100)",
+    "IS_NULLABLE": "YES",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_faculty_workload",
+    "COLUMN_NAME": "course_count",
+    "COLUMN_TYPE": "bigint",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "0",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_faculty_workload",
+    "COLUMN_NAME": "total_students",
+    "COLUMN_TYPE": "bigint",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "0",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_student_performance",
+    "COLUMN_NAME": "student_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "0",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_student_performance",
+    "COLUMN_NAME": "student_name",
+    "COLUMN_TYPE": "varchar(100)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_student_performance",
+    "COLUMN_NAME": "email",
+    "COLUMN_TYPE": "varchar(120)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_student_performance",
+    "COLUMN_NAME": "course_id",
+    "COLUMN_TYPE": "int",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "0",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_student_performance",
+    "COLUMN_NAME": "course_name",
+    "COLUMN_TYPE": "varchar(100)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": null,
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_student_performance",
+    "COLUMN_NAME": "avg_marks",
+    "COLUMN_TYPE": "decimal(6,2)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "0.00",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_student_performance",
+    "COLUMN_NAME": "attendance_pct",
+    "COLUMN_TYPE": "decimal(5,2)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "0.00",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_student_performance",
+    "COLUMN_NAME": "gpa",
+    "COLUMN_TYPE": "decimal(3,2)",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "0.00",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  },
+  {
+    "TABLE_NAME": "v_student_performance",
+    "COLUMN_NAME": "enrollment_status",
+    "COLUMN_TYPE": "enum('active','completed','cancelled')",
+    "IS_NULLABLE": "NO",
+    "COLUMN_DEFAULT": "active",
+    "EXTRA": "",
+    "COLUMN_KEY": ""
+  }
+]

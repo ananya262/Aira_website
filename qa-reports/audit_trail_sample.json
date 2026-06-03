@@ -1,0 +1,92 @@
+[
+  {
+    "id": 12,
+    "table_name": "enrollments",
+    "operation_type": "INSERT",
+    "changed_by": "root@%",
+    "changed_at": "2026-05-21T14:47:12.000Z",
+    "old_value": null,
+    "new_value": "{\"id\": 4, \"status\": \"active\", \"course_id\": 3, \"student_id\": 6}"
+  },
+  {
+    "id": 11,
+    "table_name": "courses",
+    "operation_type": "INSERT",
+    "changed_by": "root@%",
+    "changed_at": "2026-05-21T14:47:12.000Z",
+    "old_value": null,
+    "new_value": "{\"id\": 3, \"course_code\": \"QA-COURSE-B\", \"course_name\": \"QA-Course-B\"}"
+  },
+  {
+    "id": 10,
+    "table_name": "students",
+    "operation_type": "INSERT",
+    "changed_by": "root@%",
+    "changed_at": "2026-05-21T14:47:12.000Z",
+    "old_value": null,
+    "new_value": "{\"id\": 6, \"name\": \"QA-Student-B\", \"email\": \"qa-student-b@example.com\"}"
+  },
+  {
+    "id": 9,
+    "table_name": "students",
+    "operation_type": "DELETE",
+    "changed_by": "root@%",
+    "changed_at": "2026-05-21T14:47:12.000Z",
+    "old_value": "{\"id\": 3, \"name\": \"QA-Unique Student\", \"email\": \"qa-unique@example.com\"}",
+    "new_value": null
+  },
+  {
+    "id": 8,
+    "table_name": "enrollments",
+    "operation_type": "INSERT",
+    "changed_by": "root@%",
+    "changed_at": "2026-05-21T14:47:12.000Z",
+    "old_value": null,
+    "new_value": "{\"id\": 3, \"status\": \"active\", \"course_id\": 1, \"student_id\": 3}"
+  },
+  {
+    "id": 7,
+    "table_name": "students",
+    "operation_type": "DELETE",
+    "changed_by": "root@%",
+    "changed_at": "2026-05-21T14:47:12.000Z",
+    "old_value": "{\"id\": 5, \"name\": \"QA-Account Student\", \"email\": \"qa-account-student@example.com\"}",
+    "new_value": null
+  },
+  {
+    "id": 6,
+    "table_name": "students",
+    "operation_type": "INSERT",
+    "changed_by": "root@%",
+    "changed_at": "2026-05-21T14:47:12.000Z",
+    "old_value": null,
+    "new_value": "{\"id\": 5, \"name\": \"QA-Account Student\", \"email\": \"qa-account-student@example.com\"}"
+  },
+  {
+    "id": 5,
+    "table_name": "courses",
+    "operation_type": "INSERT",
+    "changed_by": "root@%",
+    "changed_at": "2026-05-21T14:47:12.000Z",
+    "old_value": null,
+    "new_value": "{\"id\": 1, \"course_code\": \"QA-COURSE-001\", \"course_name\": \"QA-Unique Course\"}"
+  },
+  {
+    "id": 4,
+    "table_name": "faculty",
+    "operation_type": "INSERT",
+    "changed_by": "root@%",
+    "changed_at": "2026-05-21T14:47:12.000Z",
+    "old_value": null,
+    "new_value": "{\"id\": 1, \"email\": \"qa-faculty@example.com\", \"faculty_name\": \"QA-Unique Faculty\"}"
+  },
+  {
+    "id": 3,
+    "table_name": "students",
+    "operation_type": "INSERT",
+    "changed_by": "root@%",
+    "changed_at": "2026-05-21T14:47:12.000Z",
+    "old_value": null,
+    "new_value": "{\"id\": 3, \"name\": \"QA-Unique Student\", \"email\": \"qa-unique@example.com\"}"
+  }
+]

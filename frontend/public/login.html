@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIRA DBMS Login | AIRA Study Centre</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; connect-src 'self' http://localhost:3000 http://127.0.0.1:3000;">
+    <link rel="stylesheet" href="assets/styles/style.css">
+    <link rel="stylesheet" href="assets/styles/dashboard.css">
+</head>
+
+<body class="dashboard-body">
+    <nav class="navbar" id="navbar">
+        <div class="container nav-inner">
+            <a href="Aira_website.html" class="logo">
+                <div class="nav-logo-circle">
+                    <img src="assets/images/Aira%20logo.png" alt="AIRA Logo">
+                </div>
+                <span>AIRA Study Centre</span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="Aira_website.html">Home</a>
+                <a href="programs.html">Programs</a>
+                <a href="about.html">About</a>
+                <a href="results.html">Results</a>
+                <a href="contact.html">Contact</a>
+                <a href="login.html" class="active">Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dbms-login-shell">
+        <section class="dbms-login-panel">
+            <div>
+                <span class="section-tag">AIRA-DBMS</span>
+                <h1>Role-Based Dashboard</h1>
+                <p>Use your Admin, Faculty, or Student account to manage enrollments, grades, attendance, and analytics.</p>
+            </div>
+
+            <form id="loginForm" class="dbms-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input id="username" name="username" class="form-control" type="text" autocomplete="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input id="password" name="password" class="form-control" type="password" autocomplete="current-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                <p id="loginStatus" class="dbms-status" role="status"></p>
+            </form>
+
+            <div class="dbms-demo-users">
+                <strong>Seed users for local demos</strong>
+                <span>admin / admin123</span>
+                <span>faculty / faculty123</span>
+                <span>student / student123</span>
+            </div>
+        </section>
+    </main>
+
+    <script src="assets/scripts/dashboard-api.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            var status = document.getElementById('loginStatus');
+            status.textContent = 'Signing in...';
+            try {
+                var form = new FormData(event.target);
+                var result = await window.AiraDashboardAPI.login({
+                    username: form.get('username'),
+                    password: form.get('password')
+                });
+                localStorage.setItem('aira_dbms_token', result.data.token);
+                localStorage.setItem('aira_dbms_user', JSON.stringify(result.data.user));
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                status.textContent = error.message;
+            }
+        });
+    </script>
+</body>
+
+</html>
+
+
